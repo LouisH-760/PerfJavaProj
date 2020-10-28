@@ -1,6 +1,6 @@
 /**
  * Hello World
- * @author louis Hermier
+ * @author Louis Hermier
  *
  */
 public class hw {
