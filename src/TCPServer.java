@@ -10,7 +10,6 @@ import java.util.List;
  *
  */
 public class TCPServer {
-	private final int PORT = 25642;
 	
 	private ServerSocket servSock;
 	private Socket sock;
@@ -21,11 +20,12 @@ public class TCPServer {
 	/**
 	 * ctor
 	 * Create the server socket that will be used to create sockets when a client connects
+	 * @param port: Port to start the server on.
 	 * @throws IOException
 	 */
-	public TCPServer() throws IOException {
-		System.out.println("Starting on " + PORT);
-		servSock = new ServerSocket(PORT);
+	public TCPServer(int port) throws IOException {
+		// Start a server socket on the given port
+		servSock = new ServerSocket(port);
 		cont = true;
 		haystack = new ArrayList<Message>();
 	}
