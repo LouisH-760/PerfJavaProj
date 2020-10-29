@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * Thread-oriented TCP Server, meant primarily for reception of data
+ * while running, all received Message objects will be appended to the public volatile haystack ArrayList
+ * change the public volatile boolean cont to false to stop
  * @author Louis Hermier
  *
  */
@@ -54,11 +56,13 @@ public class TCPServer implements Runnable{
 				}
 				// Close the connection
 				sock.close();
-		}
-		// Close the server socket
-		servSock.close();
+			}
+			// Close the server socket
+			servSock.close();
 		} catch (IOException ioe) {
 			System.err.println("IO Problem");
+		} finally {
+			cont = false;
 		}
 	}
 }
