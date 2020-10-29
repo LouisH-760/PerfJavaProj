@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -27,7 +28,17 @@ public class TCPThrowawaySender implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		sock = TCPCommon.newConnectedClientSocket(address, port);
+		try {
+			// Obtain a new socket
+			sock = TCPCommon.newConnectedClientSocket(address, port);
+			// Send the message over it
+			TCPCommon.sendWithSocket(message.toString(), sock);
+			// Destroy the socket
+			sock.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
