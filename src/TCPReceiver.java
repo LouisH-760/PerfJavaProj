@@ -11,7 +11,7 @@ import java.util.List;
  * @author Louis Hermier
  *
  */
-public class TCPServer implements Runnable{
+public class TCPReceiver implements Runnable{
 	
 	// Private variables
 	private ServerSocket servSock;
@@ -28,7 +28,7 @@ public class TCPServer implements Runnable{
 	 * @param port: Port to start the server on.
 	 * @throws IOException
 	 */
-	public TCPServer(int port) throws IOException {
+	public TCPReceiver(int port) throws IOException {
 		// Start a server socket on the given port
 		servSock = new ServerSocket(port);
 		cont = true;
