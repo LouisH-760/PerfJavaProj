@@ -9,7 +9,7 @@ import java.util.List;
  * @author Louis Hermier
  *
  */
-public class TCPServer {
+public class TCPServer implements Runnable{
 	
 	private ServerSocket servSock;
 	private Socket sock;
@@ -35,9 +35,10 @@ public class TCPServer {
 	 * then do it again
 	 * @throws IOException
 	 */
-	public void listen() throws IOException {
+	public void run() {
+		try {
 		// this has to be closed from the outside
-		while(cont) {
+			while(cont) {
 				// Accept connections on the server
 				sock = servSock.accept();
 				// print a line whenever a connection is received
@@ -56,6 +57,9 @@ public class TCPServer {
 		}
 		// Close the server socket
 		servSock.close();
+		} catch (IOException ioe) {
+			System.err.println("IO Problem");
+		}
 	}
 }
 
