@@ -39,6 +39,7 @@ public class TCPReceiver implements Runnable{
 	 * Await a connection, establish it, receive a Message
 	 * throw it on top of the haystack and close the connection, ad vitam aeternam
 	 */
+	@Override
 	public void run() {
 		try {
 		// this has to be closed from the outside
