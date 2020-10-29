@@ -22,9 +22,9 @@ public class TCPCommon {
 	 * @return connected socket
 	 * @throws IOException
 	 */
-	public static Socket newConnectedClientSocket(String adress, int port, int timeout) throws IOException {
+	public static Socket newConnectedClientSocket(String adress, int port) throws IOException {
 		Socket sock = new Socket();
-		sock.connect(new InetSocketAddress(adress, port), timeout);
+		sock.connect(new InetSocketAddress(adress, port), TIMEOUT);
 		return sock;
 	}
 	
