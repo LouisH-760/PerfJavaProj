@@ -13,12 +13,15 @@ import java.util.List;
  */
 public class TCPServer implements Runnable{
 	
+	// Private variables
 	private ServerSocket servSock;
 	private Socket sock;
 	private String received;
 	
+	// Thread-safe public variables
 	public volatile List<Message> haystack;
 	public volatile boolean cont;
+	
 	/**
 	 * ctor
 	 * Create the server socket that will be used to create sockets when a client connects
@@ -33,9 +36,8 @@ public class TCPServer implements Runnable{
 	}
 	
 	/**
-	 * Await a connection, answer the question and close it
-	 * then do it again
-	 * @throws IOException
+	 * Await a connection, establish it, receive a Message
+	 * throw it on top of the haystack and close the connection, ad vitam aeternam
 	 */
 	public void run() {
 		try {
