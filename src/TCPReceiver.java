@@ -17,9 +17,11 @@ public class TCPReceiver implements Runnable{
 	private ServerSocket servSock;
 	private Socket sock;
 	private String received;
+	// temp variables
+	private ReceivedMessage tmpMessage;
 	
 	// Thread-safe public variables
-	public volatile List<Message> haystack;
+	public volatile List<ReceivedMessage> haystack;
 	public volatile boolean cont;
 	
 	/**
@@ -32,7 +34,7 @@ public class TCPReceiver implements Runnable{
 		// Start a server socket on the given port
 		servSock = new ServerSocket(port);
 		cont = true;
-		haystack = new ArrayList<Message>();
+		haystack = new ArrayList<ReceivedMessage>();
 	}
 	
 	/**
@@ -53,7 +55,12 @@ public class TCPReceiver implements Runnable{
 				received = TCPCommon.receiveFromSocket(sock);
 				// Try to convert the received text into a message
 				try {
-					haystack.add(new Message(received));
+					// Get the actual message
+					tmpMessage = new ReceivedMessage(received);
+					// Get the sender's IP to answer (if needed)
+					tmpMessage.setAddress(sock.getInetAddress().toString());
+					// Add the message to the haystack
+					haystack.add(tmpMessage);
 				} catch (Exception e) {
 					System.err.println("Invalid Message Received");
 				}
