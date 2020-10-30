@@ -3,6 +3,8 @@ import java.util.Iterator;
 
 public class StationLogic implements Runnable{
 	
+	private String sensorIp;
+	
 	private TCPReceiver receiver;
 	private Thread t_receiver;
 	private ReceivedMessage tmp_msg;
@@ -13,6 +15,8 @@ public class StationLogic implements Runnable{
 	private StationGUI gui;
 	private Thread t_gui;
 	
+	private StationSetupGUI sGui;
+	
 	public volatile boolean cont;
 	public volatile Actions action;
 	
@@ -20,25 +24,47 @@ public class StationLogic implements Runnable{
 		receiver = new TCPReceiver(TCPCommon.STATION_PORT);
 		t_receiver = new Thread(receiver);
 		cont = true;
-		action = Actions.INIT;
+		action = Actions.PASS;
 		
-		gui = new StationGUI();
+		gui = new StationGUI(this);
 		t_gui = new Thread(gui);
+		
+		sGui = new StationSetupGUI();
 	}
 	
 	@Override
 	public void run() {
 		t_receiver.start();
+		// ask user for the sensor ip
+		sGui.init();
+		// get the sensor ip
+		sensorIp = sGui.sensorIp;
+		sGui.close();
+		// the Setup GUI can be garbage collected
+		sGui = null;
+		
 		t_gui.start();
-		while(action == Actions.INIT)
-			// wait
 		while(action != Actions.QUIT) {
-			if(action != Actions.PASS) {
-				
+			switch(action) {
+			case PASS:
+				break;
+			case INIT:
+				init();
+				break;
+			case STOP:
+				stop();
+				break;
+			case RESET:
+				reset();
+				break;
+			case MINMAX:
+				minmax();
+				break;
 			}
 		}
 		gui.cont = false;
 		receiver.cont = false;
 	}
-
+	
+	
 }
