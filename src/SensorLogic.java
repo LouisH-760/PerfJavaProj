@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Logic of the Sensor
@@ -22,6 +23,9 @@ public class SensorLogic implements Runnable{
 	
 	private Message draft;
 	private Thread t_sender;
+	
+	private TCPPeriodicSender pSender;
+	private Thread t_pSender;
 	
 	public volatile boolean cont;
 	
@@ -67,7 +71,7 @@ public class SensorLogic implements Runnable{
 				} else if(tmp_msg.getType().equals(Message.TYPE_INFO)) {
 					draft = buildReply(this.toString());
 				} else if(tmp_msg.getType().equals(Message.TYPE_DATA)) {
-					
+					pSender = new TCPPeriodicSender(tmp_msg.getAddress(), port, delay, this.toString(), () -> measure());
 				}
 				t_sender = new Thread(new TCPThrowawaySender(tmp_msg.getAddress(), port, draft));
 				t_sender.run();
@@ -114,5 +118,10 @@ public class SensorLogic implements Runnable{
 	 */
 	private Message buildReply(String content) {
 		return new Message(Message.TYPE_REPL, this.toString(), content);
+	}
+	
+	private String measure() {
+		String time = new Date().toString();
+		return String.format(MEASURE_FORMAT, time, gui.temp);
 	}
 }
