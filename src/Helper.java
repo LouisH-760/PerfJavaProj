@@ -13,4 +13,13 @@ public class Helper {
 		if(!condition)
 			throw new IllegalArgumentException(message);
 	}
+	
+	public static int str2int(String str) {
+		try {
+			int tmpint = Integer.parseInt(str);
+			return tmpint;
+		} catch (Exception e) {
+			return -1;
+		}
+	}
 }

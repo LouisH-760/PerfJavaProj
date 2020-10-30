@@ -1,10 +1,20 @@
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Define a Message for the weatherstation
  * @author Louis Hermier
  *
  */
 public class Message {
-	public final static String SEP = ";";
+	// create a list of all types
+	public final static String TYPE_REPL = "REPL";
+	public final static String TYPE_INFO = "INFO";
+	public final static String TYPE_DATA = "DATA";
+	public final static String TYPE_STOP = "STOP";
+	public final static List<String> TYPES = Arrays.asList(new String[]{TYPE_INFO, TYPE_DATA, TYPE_STOP, TYPE_REPL});
+	public final static String SEP = "|";
+	public final static String WEAK_SEP = ";";
 	
 	private String id;
 	
@@ -44,7 +54,7 @@ public class Message {
 	 * @param type: INFO, ...
 	 */
 	public void setType(String type) {
-		// add checks
+		Helper.check(TYPES.contains(type), "Wrong Type");
 		this.type = type;
 	}
 	
