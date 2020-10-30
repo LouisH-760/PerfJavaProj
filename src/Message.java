@@ -41,7 +41,7 @@ public class Message {
 	 */
 	public Message(String message) {
 		String[] split = message.split(SEP);
-		Helper.check(split.length == 3, "Wrong message format");
+		Helper.check(split.length >= 3, "Wrong message format");
 		
 		// reconstruct the message from the string
 		setType(split[0]);
@@ -54,7 +54,7 @@ public class Message {
 	 * @param type: INFO, ...
 	 */
 	public void setType(String type) {
-		Helper.check(TYPES.contains(type), "Wrong Type");
+
 		this.type = type;
 	}
 	

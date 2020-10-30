@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Logic of the Sensor
@@ -64,11 +65,13 @@ public class SensorLogic implements Runnable{
 	@Override
 	public void run() {
 		// @TODO: move to separate function (init()?) just like close()
-		t_receiver.run();
-		t_gui.run();
+		t_receiver.start();
+		t_gui.start();
 		while(cont) {
 			if(!receiver.haystack.isEmpty()) {
-				tmp_msg = receiver.haystack.remove(0);
+				Iterator<ReceivedMessage> bob = receiver.haystack.iterator();
+				tmp_msg = bob.next();
+				bob.remove();
 				
 				if(tmp_msg.getType().equals(Message.TYPE_STOP)) {
 					draft = buildReply(ACK);
@@ -83,11 +86,11 @@ public class SensorLogic implements Runnable{
 					delay = Helper.str2int(tmp_msg.getContents());
 					pSender = new TCPPeriodicSender(tmp_msg.getAddress(), port, delay, this.toString(), () -> measure());
 					t_pSender = new Thread(pSender);
-					t_pSender.run();
+					t_pSender.start();
 					pSenderRunning = true;
 				}
 				t_sender = new Thread(new TCPThrowawaySender(tmp_msg.getAddress(), port, draft));
-				t_sender.run();
+				t_sender.start();
 				// wait for the answer to complete before resuming.
 				try {
 					t_sender.join();

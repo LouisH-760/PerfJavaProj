@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ public class TCPReceiver implements Runnable{
 	private ReceivedMessage tmpMessage;
 	
 	// Thread-safe public variables
-	public volatile List<ReceivedMessage> haystack;
+	public Collection<ReceivedMessage> haystack;
 	public volatile boolean cont;
 	
 	/**
@@ -34,7 +36,7 @@ public class TCPReceiver implements Runnable{
 		// Start a server socket on the given port
 		servSock = new ServerSocket(port);
 		cont = true;
-		haystack = new ArrayList<ReceivedMessage>();
+		haystack = Collections.synchronizedCollection(new ArrayList<ReceivedMessage>());
 	}
 	
 	/**
@@ -49,7 +51,6 @@ public class TCPReceiver implements Runnable{
 				// Accept connections on the server
 				sock = servSock.accept();
 				// print a line whenever a connection is received
-				System.out.println("connection from: " + sock.getInetAddress());
 				// Actually receive data
 				// Packet size is a constant in TCPCommon
 				received = TCPCommon.receiveFromSocket(sock);
@@ -63,6 +64,7 @@ public class TCPReceiver implements Runnable{
 					haystack.add(tmpMessage);
 				} catch (Exception e) {
 					System.err.println("Invalid Message Received");
+					e.printStackTrace();
 				}
 				// Close the connection
 				sock.close();

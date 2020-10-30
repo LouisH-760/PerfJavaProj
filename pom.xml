@@ -4,12 +4,17 @@
   <artifactId>cc1</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Controle Continu 1</name>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
   <description>Projet de Station Météo</description>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
         <configuration>
           <archive>
             <manifest>

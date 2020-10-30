@@ -30,6 +30,7 @@ public class TCPPeriodicSender implements Runnable{
 		while(cont) {
 			t_sender = new Thread(new TCPThrowawaySender(address, port, buildMessage()));
 			try {
+				t_sender.start();
 				t_sender.join();
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {

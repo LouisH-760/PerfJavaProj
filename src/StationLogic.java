@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Iterator;
 
 public class StationLogic implements Runnable{
 
@@ -21,14 +22,25 @@ public class StationLogic implements Runnable{
 	
 	@Override
 	public void run() {
-		t_receiver.run();
-		draft = new Message(Message.TYPE_DATA, "aa", "1000");
+		t_receiver.start();
+		draft = new Message(Message.TYPE_DATA, "127.0.0.1", "1000");
 		t_sender = new Thread(new TCPThrowawaySender("127.0.0.1", port, draft));
-		t_sender.run();
+		t_sender.start();
 		while(cont) {
 			if(!receiver.haystack.isEmpty()) {
-				tmp_msg = receiver.haystack.remove(0);
-				System.out.println(tmp_msg);
+				Iterator<ReceivedMessage> bob = receiver.haystack.iterator();
+				while(bob.hasNext()) {
+					tmp_msg = bob.next();
+					bob.remove();
+					System.out.println(tmp_msg);
+				}
+					
+			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		receiver.cont = false;

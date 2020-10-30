@@ -1,16 +1,19 @@
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, InterruptedException{
 		Thread t;
-		try {
-			t = new Thread(new StationLogic(25642));
-			t.run();
-			Thread t1 = new Thread(new SensorLogic("aa", "bb", 25642));
-			t1.run();
-			t.join();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		int port = 10000;
+		Scanner input = new Scanner(System.in);
+		System.out.println("a for station");
+		String tmp = input.nextLine();
+		if(tmp.equals("a")) {
+			t = new Thread(new StationLogic(port));
+		} else {
+			t = new Thread(new SensorLogic("aa", "bb", port));
 		}
+		t.start();
+		t.join();
 	}
 }
