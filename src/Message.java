@@ -15,6 +15,7 @@ public class Message {
 	public final static List<String> TYPES = Arrays.asList(new String[]{TYPE_INFO, TYPE_DATA, TYPE_STOP, TYPE_REPL});
 	public final static String SEP = "!";
 	public final static String WEAK_SEP = ";";
+	public final static String EMPTY = "NULL";
 	
 	private String id;
 	

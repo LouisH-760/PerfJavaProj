@@ -14,6 +14,7 @@ public class Temperature {
 	
 	public Temperature(String temperature) {
 		String[] expl = temperature.split(Message.WEAK_SEP);
+		Helper.check(expl.length == 2, "Not a temperature");
 		setTimestamp(expl[0]);
 		setTemp(Double.parseDouble(expl[1]));
 	}
@@ -36,5 +37,9 @@ public class Temperature {
 	
 	public String toString() {
 		return getTimestamp() + Message.WEAK_SEP + getTemp();
+	}
+	
+	public static boolean isTemperature(String str) {
+		return str.split(Message.WEAK_SEP).length == 2;
 	}
 }

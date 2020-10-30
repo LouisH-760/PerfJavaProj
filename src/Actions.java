@@ -5,5 +5,6 @@ public enum Actions {
 	RESET,  // reset values
 	STOP,   // stop comms
 	INIT,   // init comms
-	QUIT    // full quit
+	QUIT,   // full quit
+	INFO    // sensor info
 }
