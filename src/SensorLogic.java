@@ -9,7 +9,7 @@ import java.util.Iterator;
  */
 public class SensorLogic implements Runnable{
 	
-	private final String MEASURE_FORMAT = "%s" + Message.WEAK_SEP + "%d";
+	private final String MEASURE_FORMAT = "%s" + Message.WEAK_SEP + "%f";
 	
 	private final String ACK = "ACK";
 	
@@ -69,8 +69,6 @@ public class SensorLogic implements Runnable{
 				Iterator<ReceivedMessage> bob = receiver.haystack.iterator();
 				tmp_msg = bob.next();
 				bob.remove();
-				
-				System.out.println(tmp_msg);
 				
 				if(tmp_msg.getType().equals(Message.TYPE_STOP)) {
 					draft = buildReply(ACK);

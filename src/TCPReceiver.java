@@ -56,11 +56,10 @@ public class TCPReceiver implements Runnable{
 				received = TCPCommon.receiveFromSocket(sock);
 				// Try to convert the received text into a message
 				try {
-					System.out.println(received);
 					// Get the actual message
 					tmpMessage = new ReceivedMessage(received);
 					// Get the sender's IP to answer (if needed)
-					tmpMessage.setAddress(sock.getInetAddress().toString());
+					tmpMessage.setAddress(sock.getInetAddress().toString().substring(1));
 					// Add the message to the haystack
 					haystack.add(tmpMessage);
 				} catch (Exception e) {

@@ -31,7 +31,7 @@ public class StationLogic implements Runnable{
 				while(bob.hasNext()) {
 					tmp_msg = bob.next();
 					bob.remove();
-					System.out.println(tmp_msg);
+					System.out.println(tmp_msg.getContents().split(Message.WEAK_SEP)[1]);
 				}
 					
 			}
