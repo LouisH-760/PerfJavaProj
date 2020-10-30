@@ -13,7 +13,7 @@ public class Message {
 	public final static String TYPE_DATA = "DATA";
 	public final static String TYPE_STOP = "STOP";
 	public final static List<String> TYPES = Arrays.asList(new String[]{TYPE_INFO, TYPE_DATA, TYPE_STOP, TYPE_REPL});
-	public final static String SEP = "|";
+	public final static String SEP = "!";
 	public final static String WEAK_SEP = ";";
 	
 	private String id;
