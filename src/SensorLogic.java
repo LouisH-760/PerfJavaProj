@@ -7,6 +7,8 @@ import java.io.IOException;
  */
 public class SensorLogic implements Runnable{
 	
+	private final String MEASURE_FORMAT = "%s" + Message.WEAK_SEP + "%d";
+	
 	private final String ACK = "ACK";
 	
 	private String productId;
@@ -17,11 +19,14 @@ public class SensorLogic implements Runnable{
 	private TCPReceiver receiver;
 	private Thread t_receiver;
 	private ReceivedMessage tmp_msg;
-	private Message draft;
 	
+	private Message draft;
 	private Thread t_sender;
 	
 	public volatile boolean cont;
+	
+	private SensorGUI gui;
+	private Thread t_gui;
 	
 	/**
 	 * Constructor
@@ -40,6 +45,8 @@ public class SensorLogic implements Runnable{
 		
 		cont = true;
 		
+		gui = new SensorGUI();
+		t_gui = new Thread(gui);
 	}
 	
 	/**
@@ -48,6 +55,7 @@ public class SensorLogic implements Runnable{
 	public void run() {
 		// @TODO: move to separate function (init()?) just like close()
 		t_receiver.run();
+		t_gui.run();
 		while(cont) {
 			if(!receiver.haystack.isEmpty()) {
 				tmp_msg = receiver.haystack.remove(0);
@@ -58,8 +66,7 @@ public class SensorLogic implements Runnable{
 				} else if(tmp_msg.getType().equals(Message.TYPE_INFO)) {
 					draft = buildReply(this.toString());
 				} else if(tmp_msg.getType().equals(Message.TYPE_DATA)) {
-					// @TODO: implement
-					draft = buildReply("Unimplemented");
+					
 				}
 				t_sender = new Thread(new TCPThrowawaySender(tmp_msg.getAddress(), port, draft));
 				t_sender.run();
@@ -80,6 +87,7 @@ public class SensorLogic implements Runnable{
 	 */
 	public void close() {
 		receiver.cont = false;
+		gui.cont = false;
 	}
 	
 	public void setVendorId(String vendorId) {
@@ -95,7 +103,7 @@ public class SensorLogic implements Runnable{
 	}
 	
 	public String toString() {
-		return "ProductID: " + productId + ", VendorID: " + vendorId;
+		return "ProductID: " + productId + Message.WEAK_SEP + "VendorID: " + vendorId;
 	}
 	
 	/**
