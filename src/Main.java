@@ -9,9 +9,9 @@ public class Main {
 		System.out.println("a for station");
 		String tmp = input.nextLine();
 		if(tmp.equals("a")) {
-			t = new Thread(new StationLogic(port));
+			t = new Thread(new StationLogic());
 		} else {
-			t = new Thread(new SensorLogic("aa", "bb", port));
+			t = new Thread(new SensorLogic("aa", "bb"));
 		}
 		t.start();
 		t.join();

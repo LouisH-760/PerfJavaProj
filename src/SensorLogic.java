@@ -16,8 +16,6 @@ public class SensorLogic implements Runnable{
 	private String productId;
 	private String vendorId;
 	
-	private int port;
-	
 	private TCPReceiver receiver;
 	private Thread t_receiver;
 	private ReceivedMessage tmp_msg;
@@ -43,12 +41,11 @@ public class SensorLogic implements Runnable{
 	 * @param port      : Port on which communication is done
 	 * @throws IOException : when the TCPReceiver cannot start
 	 */
-	public SensorLogic(String vendorId, String productId, int port) throws IOException {
+	public SensorLogic(String vendorId, String productId) throws IOException {
 		setVendorId(vendorId);
 		setProductId(productId);
-		setPort(port);
 		
-		receiver = new TCPReceiver(port);
+		receiver = new TCPReceiver(TCPCommon.SENSOR_PORT);
 		t_receiver = new Thread(receiver);
 		
 		cont = true;
@@ -73,29 +70,39 @@ public class SensorLogic implements Runnable{
 				tmp_msg = bob.next();
 				bob.remove();
 				
+				System.out.println(tmp_msg);
+				
 				if(tmp_msg.getType().equals(Message.TYPE_STOP)) {
 					draft = buildReply(ACK);
 					if(pSenderRunning) {
 						pSender.cont = false;
 						pSenderRunning = false;
 					}
+					t_sender = new Thread(new TCPThrowawaySender(tmp_msg.getAddress(), TCPCommon.STATION_PORT, draft));
+					t_sender.start();
+					// wait for the answer to complete before resuming.
+					try {
+						t_sender.join();
+					} catch (Exception e) {
+						System.err.println("From SensorLogic: Interrupted while sending a reply");
+					}
 				} else if(tmp_msg.getType().equals(Message.TYPE_INFO)) {
 					draft = buildReply(this.toString());
+					t_sender = new Thread(new TCPThrowawaySender(tmp_msg.getAddress(), TCPCommon.STATION_PORT, draft));
+					t_sender.start();
+					// wait for the answer to complete before resuming.
+					try {
+						t_sender.join();
+					} catch (Exception e) {
+						System.err.println("From SensorLogic: Interrupted while sending a reply");
+					}
 				} else if(tmp_msg.getType().equals(Message.TYPE_DATA)) {
 					// if requesting data, body of the message should be the delay!
 					delay = Helper.str2int(tmp_msg.getContents());
-					pSender = new TCPPeriodicSender(tmp_msg.getAddress(), port, delay, this.toString(), () -> measure());
+					pSender = new TCPPeriodicSender(tmp_msg.getAddress(), TCPCommon.STATION_PORT, delay, this.toString(), () -> measure());
 					t_pSender = new Thread(pSender);
 					t_pSender.start();
 					pSenderRunning = true;
-				}
-				t_sender = new Thread(new TCPThrowawaySender(tmp_msg.getAddress(), port, draft));
-				t_sender.start();
-				// wait for the answer to complete before resuming.
-				try {
-					t_sender.join();
-				} catch (InterruptedException e) {
-					System.err.println("From SensorLogic: Interrupted while sending a reply");
 				}
 			}
 		}
@@ -119,10 +126,6 @@ public class SensorLogic implements Runnable{
 	
 	public void setProductId(String productId) {
 		this.productId = productId;
-	}
-	
-	public void setPort(int port) {
-		this.port = port;
 	}
 	
 	public String toString() {

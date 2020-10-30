@@ -54,7 +54,6 @@ public class Message {
 	 * @param type: INFO, ...
 	 */
 	public void setType(String type) {
-
 		this.type = type;
 	}
 	

@@ -13,9 +13,8 @@ public class StationLogic implements Runnable{
 	private Thread t_sender;
 	public volatile boolean cont;
 	
-	public StationLogic(int port) throws IOException {
-		this.port = port;
-		receiver = new TCPReceiver(port);
+	public StationLogic() throws IOException {
+		receiver = new TCPReceiver(TCPCommon.STATION_PORT);
 		t_receiver = new Thread(receiver);
 		cont = true;
 	}
@@ -24,7 +23,7 @@ public class StationLogic implements Runnable{
 	public void run() {
 		t_receiver.start();
 		draft = new Message(Message.TYPE_DATA, "127.0.0.1", "1000");
-		t_sender = new Thread(new TCPThrowawaySender("127.0.0.1", port, draft));
+		t_sender = new Thread(new TCPThrowawaySender("127.0.0.1", TCPCommon.SENSOR_PORT, draft));
 		t_sender.start();
 		while(cont) {
 			if(!receiver.haystack.isEmpty()) {
