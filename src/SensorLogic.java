@@ -32,6 +32,9 @@ public class SensorLogic implements Runnable{
 	private SensorGUI gui;
 	private Thread t_gui;
 	
+	private int delay;
+	private boolean pSenderRunning;
+	
 	/**
 	 * Constructor
 	 * @param vendorId  : VendorId of the sensor
@@ -51,6 +54,8 @@ public class SensorLogic implements Runnable{
 		
 		gui = new SensorGUI();
 		t_gui = new Thread(gui);
+		
+		pSenderRunning = false;
 	}
 	
 	/**
@@ -67,11 +72,19 @@ public class SensorLogic implements Runnable{
 				
 				if(tmp_msg.getType().equals(Message.TYPE_STOP)) {
 					draft = buildReply(ACK);
-					cont = false;
+					if(pSenderRunning) {
+						pSender.cont = false;
+						pSenderRunning = false;
+					}
 				} else if(tmp_msg.getType().equals(Message.TYPE_INFO)) {
 					draft = buildReply(this.toString());
 				} else if(tmp_msg.getType().equals(Message.TYPE_DATA)) {
+					// if requesting data, body of the message should be the delay!
+					delay = Helper.str2int(tmp_msg.getContents());
 					pSender = new TCPPeriodicSender(tmp_msg.getAddress(), port, delay, this.toString(), () -> measure());
+					t_pSender = new Thread(pSender);
+					t_pSender.run();
+					pSenderRunning = true;
 				}
 				t_sender = new Thread(new TCPThrowawaySender(tmp_msg.getAddress(), port, draft));
 				t_sender.run();
@@ -93,6 +106,8 @@ public class SensorLogic implements Runnable{
 	public void close() {
 		receiver.cont = false;
 		gui.cont = false;
+		if(pSenderRunning)
+			pSender.cont = false;
 	}
 	
 	public void setVendorId(String vendorId) {

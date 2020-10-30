@@ -15,7 +15,11 @@ public class Helper {
 	}
 	
 	public static int str2int(String str) {
-		int tmpint = Integer.parseInt(str);
-		return tmpint;
+		try {
+			int tmpint = Integer.parseInt(str);
+			return tmpint;
+		} catch (Exception e) {
+			return -1;
+		}
 	}
 }
