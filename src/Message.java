@@ -1,9 +1,14 @@
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Define a Message for the weatherstation
  * @author Louis Hermier
  *
  */
 public class Message {
+	// create a list of all types
+	public final static List<String> TYPES = Arrays.asList(new String[]{"INFO", "DATA", "STOP"});
 	public final static String SEP = ";";
 	
 	private String id;
@@ -44,7 +49,7 @@ public class Message {
 	 * @param type: INFO, ...
 	 */
 	public void setType(String type) {
-		// add checks
+		Helper.check(TYPES.contains(type), "Wrong Type");
 		this.type = type;
 	}
 	
