@@ -8,7 +8,11 @@ import java.util.List;
  */
 public class Message {
 	// create a list of all types
-	public final static List<String> TYPES = Arrays.asList(new String[]{"INFO", "DATA", "STOP"});
+	public final static String TYPE_REPL = "REPL";
+	public final static String TYPE_INFO = "INFO";
+	public final static String TYPE_DATA = "DATA";
+	public final static String TYPE_STOP = "STOP";
+	public final static List<String> TYPES = Arrays.asList(new String[]{TYPE_INFO, TYPE_DATA, TYPE_STOP, TYPE_REPL});
 	public final static String SEP = ";";
 	
 	private String id;
