@@ -19,4 +19,8 @@ public class ReceivedMessage extends Message{
 		return address;
 	}
 	
+	public Message toMessage() {
+		return new Message(getType(), getId(), getContents());
+	}
+	
 }

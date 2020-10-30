@@ -9,8 +9,6 @@ import java.util.Iterator;
  */
 public class SensorLogic implements Runnable{
 	
-	private final String MEASURE_FORMAT = "%s" + Message.WEAK_SEP + "%f";
-	
 	private final String ACK = "ACK";
 	
 	private String productId;
@@ -141,6 +139,6 @@ public class SensorLogic implements Runnable{
 	
 	private String measure() {
 		String time = new Date().toString();
-		return String.format(MEASURE_FORMAT, time, gui.temp);
+		return new Temperature(time, gui.temp).toString();
 	}
 }
