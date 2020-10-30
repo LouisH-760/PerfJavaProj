@@ -21,6 +21,7 @@ public class SensorGUI implements Runnable{
 		cont = true;
 	}
 	
+	@Override
 	public void run() {
 		while (cont) {
 			do {

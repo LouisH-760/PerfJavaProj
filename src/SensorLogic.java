@@ -52,6 +52,7 @@ public class SensorLogic implements Runnable{
 	/**
 	 * Start the receiver, await requests and send replies
 	 */
+	@Override
 	public void run() {
 		// @TODO: move to separate function (init()?) just like close()
 		t_receiver.run();
