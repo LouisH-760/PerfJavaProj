@@ -59,6 +59,8 @@ public class TCPReceiver implements Runnable{
 					// Get the actual message
 					tmpMessage = new ReceivedMessage(received);
 					// Get the sender's IP to answer (if needed)
+					// remove the leasing / that java likes to add somehow
+					// otherwise the answer can't be sent, because the IP isn't recognized
 					tmpMessage.setAddress(sock.getInetAddress().toString().substring(1));
 					// Add the message to the haystack
 					haystack.add(tmpMessage);
