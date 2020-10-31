@@ -85,6 +85,7 @@ public class StationLogic implements Runnable{
 			case QUIT:
 				gui.cont = false;
 				receiver.cont = false;
+				System.exit(0);
 				break;
 			}
 		}

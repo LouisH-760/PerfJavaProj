@@ -6,6 +6,8 @@ import java.util.Scanner;
  *
  */
 public class StationGUI implements Runnable{
+	private final String TEMP_FORMAT = "Last temperature packet value: %.02d°C (Measured at %s)";
+	
 	private Scanner input;
 	private StationLogic parent;
 	
@@ -59,10 +61,10 @@ public class StationGUI implements Runnable{
 		System.out.println("Station: " + parent.stationName);
 		try {
 			System.out.println("Last non-temperature packet content: " + parent.lastNonTemp.getContents());
-			System.out.println("Last temperature: " + parent.lastTemp);
 		} catch (Exception e) {
-			System.out.println("No data available yet.");
+			System.out.println("No data available yet for non-temperature content.");
 		}
+		System.out.println("Last temperature: " + parent.lastTemp);
 		
 	}
 }
