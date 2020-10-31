@@ -58,7 +58,7 @@ public class StationGUI implements Runnable{
 	private void header() {
 		System.out.println("Station: " + parent.stationName);
 		try {
-			System.out.println("Last non-temperature packet content: " + parent.lastNonTemp);
+			System.out.println("Last non-temperature packet content: " + parent.lastNonTemp.getContents());
 			System.out.println("Last temperature: " + parent.lastTemp);
 		} catch (Exception e) {
 			System.out.println("No data available yet.");
