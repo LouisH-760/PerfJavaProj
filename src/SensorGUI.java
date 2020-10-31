@@ -1,8 +1,11 @@
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
  * User interaction for the sensor
- * @author LouisHermier
+ * @author LouisHermier, ArnoChaidron
  *
  */
 public class SensorGUI implements Runnable{
@@ -14,6 +17,7 @@ public class SensorGUI implements Runnable{
 	public volatile boolean cont;
 	
 	private Scanner input;
+	private String tmp;
 	private double tmpDouble;
 	
 	public SensorGUI() {
@@ -25,8 +29,15 @@ public class SensorGUI implements Runnable{
 	public void run() {
 		while (cont) {
 			do {
+				NumberFormat format = NumberFormat.getInstance(Locale.getDefault());
 				System.out.println(TEMP_CUE);
-				tmpDouble = input.nextDouble();
+				tmp = input.next();
+				try {
+					Number number = format.parse(tmp);
+					tmpDouble = number.doubleValue();
+				} catch (ParseException e) {
+					tmpDouble = MAX_TEMP + 1;
+				}
 			} while (!(tmpDouble >= MIN_TEMP && tmpDouble <= MAX_TEMP));
 			temp = tmpDouble;
 		}
