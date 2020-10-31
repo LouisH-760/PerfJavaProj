@@ -6,7 +6,6 @@ import java.util.Scanner;
  *
  */
 public class StationGUI implements Runnable{
-	private String name;
 	private Scanner input;
 	private StationLogic parent;
 	
@@ -26,6 +25,7 @@ public class StationGUI implements Runnable{
 	}
 	
 	private Actions choiceGui() {
+		// clean input
 		System.out.println("1. Start Communication with the sensor");
 		System.out.println("2. Stop communication with the sensor");
 		System.out.println("3. Min/Max");
@@ -34,6 +34,8 @@ public class StationGUI implements Runnable{
 		System.out.println("99. Quit");
 		System.out.println("??. Pass");
 		System.out.print("int choice >");
+		while (!input.hasNextInt()) 
+			input.next();
 		int choice = input.nextInt();
 		switch (choice) {
 		case 1:

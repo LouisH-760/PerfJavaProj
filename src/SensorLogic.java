@@ -64,9 +64,7 @@ public class SensorLogic implements Runnable{
 		t_gui.start();
 		while(cont) {
 			if(!receiver.haystack.isEmpty()) {
-				Iterator<ReceivedMessage> bob = receiver.haystack.iterator();
-				tmp_msg = bob.next();
-				bob.remove();
+				tmp_msg = receiver.haystack.pop();
 				
 				if(tmp_msg.getType().equals(Message.TYPE_STOP)) {
 					draft = buildReply(ACK);

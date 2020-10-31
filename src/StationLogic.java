@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class StationLogic implements Runnable{
+	private final String POLLING_INTERVAL = "2000";
+	
 	
 	private String sensorIp;
 	public String stationName;
@@ -18,6 +20,7 @@ public class StationLogic implements Runnable{
 	
 	private StationSetupGUI sGui;
 	
+	private ReceivedMessage tmpMsg;
 	public Message lastNonTemp;
 	public Temperature lastTemp;
 	
@@ -48,17 +51,17 @@ public class StationLogic implements Runnable{
 		// get the sensor ip
 		sensorIp = sGui.sensorIp;
 		stationName = sGui.stationName;
-		sGui.close();
 		// the Setup GUI can be garbage collected
 		sGui = null;
 		
 		t_gui.start();
 		while(action != Actions.QUIT) {
 			if(!receiver.haystack.isEmpty()) {
-				Iterator<ReceivedMessage> iter = receiver.haystack.iterator();
-				while(iter.hasNext()) {
-					temps.add(new Temperature(iter.next().getContents()));
-					iter.remove();
+				tmpMsg = receiver.haystack.pop();
+				if(Temperature.isTemperature(tmpMsg.getContents())) {
+					lastTemp = new Temperature(tmpMsg.getContents());
+				} else {
+					lastNonTemp = tmpMsg.toMessage();
 				}
 			}
 			switch(action) {
@@ -86,7 +89,7 @@ public class StationLogic implements Runnable{
 	}
 	
 	private void init() {
-		draft = buildMessage(Message.TYPE_DATA, Message.EMPTY);
+		draft = buildMessage(Message.TYPE_DATA, POLLING_INTERVAL);
 		t_sender = new Thread(new TCPThrowawaySender(sensorIp, TCPCommon.SENSOR_PORT, draft));
 		t_sender.start();
 	}
@@ -99,6 +102,18 @@ public class StationLogic implements Runnable{
 	
 	private void reset() {
 		temps = new ArrayList<Temperature>();
+	}
+	
+	private void minmax() {
+		// sort the array in ascending order
+		temps.sort((a, b) -> (int) Math.round(b.getTemp() - a.getTemp()));
+		StationQuickDisplay.minmax(temps.get(0).getTemp(), temps.get(temps.size() - 1).getTemp());
+	}
+	
+	private void info() {
+		draft = buildMessage(Message.TYPE_INFO, Message.EMPTY);
+		t_sender = new Thread(new TCPThrowawaySender(sensorIp, TCPCommon.SENSOR_PORT, draft));
+		t_sender.start();
 	}
 	
 	private Message buildMessage(String type, String contents) {
