@@ -66,6 +66,11 @@ public class StationLogic implements Runnable{
 			}
 			switch(action) {
 			case PASS:
+				try {
+					Thread.sleep(Integer.parseInt(POLLING_INTERVAL) / 8);
+				} catch (Exception e) {
+					// interrupted
+				}
 				break;
 			case INIT:
 				init();
