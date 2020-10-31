@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.Date;
-import java.util.Iterator;
 
 /**
  * Logic of the Sensor

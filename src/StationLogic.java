@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class StationLogic implements Runnable{
 	private final String POLLING_INTERVAL = "2000";
@@ -83,10 +82,12 @@ public class StationLogic implements Runnable{
 			case INFO:
 				info();
 				break;
+			case QUIT:
+				gui.cont = false;
+				receiver.cont = false;
+				break;
 			}
 		}
-		gui.cont = false;
-		receiver.cont = false;
 	}
 	
 	private void init() {
