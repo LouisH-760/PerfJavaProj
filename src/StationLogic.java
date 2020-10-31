@@ -60,6 +60,7 @@ public class StationLogic implements Runnable{
 				tmpMsg = receiver.haystack.pop();
 				if(Temperature.isTemperature(tmpMsg.getContents())) {
 					lastTemp = new Temperature(tmpMsg.getContents());
+					temps.add(lastTemp);
 				} else {
 					lastNonTemp = tmpMsg.toMessage();
 				}
@@ -92,28 +93,37 @@ public class StationLogic implements Runnable{
 		draft = buildMessage(Message.TYPE_DATA, POLLING_INTERVAL);
 		t_sender = new Thread(new TCPThrowawaySender(sensorIp, TCPCommon.SENSOR_PORT, draft));
 		t_sender.start();
+		done();
 	}
 	
 	private void stop() {
 		draft = buildMessage(Message.TYPE_STOP, Message.EMPTY);
 		t_sender = new Thread(new TCPThrowawaySender(sensorIp, TCPCommon.SENSOR_PORT, draft));
 		t_sender.start();
+		done();
 	}
 	
 	private void reset() {
 		temps = new ArrayList<Temperature>();
+		done();
 	}
 	
 	private void minmax() {
 		// sort the array in ascending order
 		temps.sort((a, b) -> (int) Math.round(b.getTemp() - a.getTemp()));
 		StationQuickDisplay.minmax(temps.get(0).getTemp(), temps.get(temps.size() - 1).getTemp());
+		done();
 	}
 	
 	private void info() {
 		draft = buildMessage(Message.TYPE_INFO, Message.EMPTY);
 		t_sender = new Thread(new TCPThrowawaySender(sensorIp, TCPCommon.SENSOR_PORT, draft));
 		t_sender.start();
+		done();
+	}
+	
+	private void done() {
+		action = Actions.PASS;
 	}
 	
 	private Message buildMessage(String type, String contents) {

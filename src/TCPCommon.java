@@ -12,7 +12,7 @@ import java.net.Socket;
 public class TCPCommon {
 	// Size (Bytes) of the packets to send
 	public static final int BUF_SIZE = 4096;
-	public static final int TIMEOUT = 5000;
+	public static final int TIMEOUT = 10000;
 	public static final int STATION_PORT = 10000;
 	public static final int SENSOR_PORT = 20000;
 	
