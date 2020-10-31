@@ -16,7 +16,12 @@ public class Temperature {
 		String[] expl = temperature.split(Message.WEAK_SEP);
 		Helper.check(expl.length == 2, "Not a temperature");
 		setTimestamp(expl[0]);
-		setTemp(Double.parseDouble(expl[1]));
+		try {
+			setTemp(Double.parseDouble(expl[1]));
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Not a temperature");
+		}
+		
 	}
 	
 	public void setTimestamp(String timestamp) {
@@ -40,6 +45,12 @@ public class Temperature {
 	}
 	
 	public static boolean isTemperature(String str) {
-		return str.split(Message.WEAK_SEP).length == 2;
+		String[] expl = str.split(Message.WEAK_SEP);
+		try {
+			Double.parseDouble(expl[1]);
+		} catch (Exception e) {
+			return false;
+		}
+		return expl.length == 2;
 	}
 }
