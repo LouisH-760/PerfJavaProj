@@ -6,7 +6,7 @@ import java.util.Scanner;
  *
  */
 public class SensorGUI implements Runnable{
-	private final String TEMP_CUE = "What is the current temperature? (double)";
+	private final String TEMP_CUE = "What is the current temperature? (double) (CTRL+C to quit)";
 	private final double MIN_TEMP = -20;
 	private final double MAX_TEMP = 50;
 	
