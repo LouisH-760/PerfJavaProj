@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 public class StationLogic implements Runnable{
 	private final String POLLING_INTERVAL = "2000";
@@ -26,7 +28,7 @@ public class StationLogic implements Runnable{
 	public volatile boolean cont;
 	public volatile Actions action;
 	
-	private ArrayList<Temperature> temps;
+	private HashSet<Double> temps;
 	
 	public StationLogic() throws IOException {
 		receiver = new TCPReceiver(TCPCommon.STATION_PORT);
@@ -39,7 +41,7 @@ public class StationLogic implements Runnable{
 		
 		sGui = new StationSetupGUI();
 		
-		temps = new ArrayList<Temperature>();
+		temps = new HashSet<Double>();
 	}
 	
 	@Override
@@ -59,7 +61,7 @@ public class StationLogic implements Runnable{
 				tmpMsg = receiver.haystack.pop();
 				if(Temperature.isTemperature(tmpMsg.getContents())) {
 					lastTemp = new Temperature(tmpMsg.getContents());
-					temps.add(lastTemp);
+					temps.add(lastTemp.getTemp());
 				} else {
 					lastNonTemp = tmpMsg.toMessage();
 				}
@@ -111,14 +113,17 @@ public class StationLogic implements Runnable{
 	}
 	
 	private void reset() {
-		temps = new ArrayList<Temperature>();
+		temps = new HashSet<Double>();
 		done();
 	}
 	
 	private void minmax() {
-		// sort the array in ascending order
-		temps.sort((a, b) -> (int) Math.round(b.getTemp() - a.getTemp()));
-		StationQuickDisplay.minmax(temps.get(0).getTemp(), temps.get(temps.size() - 1).getTemp());
+		try {
+			StationQuickDisplay.minmax(Collections.min(temps), Collections.max(temps));
+		} catch (Exception e) {
+			
+		}
+		
 		done();
 	}
 	
