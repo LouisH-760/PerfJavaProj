@@ -3,7 +3,7 @@ import java.util.Date;
 
 /**
  * Logic of the Sensor
- * @author Louis Hermier
+ * @author Louis Hermier, Arno Chaidron
  *
  */
 public class SensorLogic implements Runnable{
@@ -12,6 +12,7 @@ public class SensorLogic implements Runnable{
 	
 	private String productId;
 	private String vendorId;
+	private String location;
 	
 	private TCPReceiver receiver;
 	private Thread t_receiver;
@@ -35,12 +36,13 @@ public class SensorLogic implements Runnable{
 	 * Constructor
 	 * @param vendorId  : VendorId of the sensor
 	 * @param productId : ProductID of the sensor
-	 * @param port      : Port on which communication is done
+	 * @param location : Location of the sensor
 	 * @throws IOException : when the TCPReceiver cannot start
 	 */
-	public SensorLogic(String vendorId, String productId) throws IOException {
+	public SensorLogic(String vendorId, String productId, String location) throws IOException {
 		setVendorId(vendorId);
 		setProductId(productId);
+		setLocation(location);
 		
 		receiver = new TCPReceiver(TCPCommon.SENSOR_PORT);
 		t_receiver = new Thread(receiver);
@@ -121,8 +123,12 @@ public class SensorLogic implements Runnable{
 		this.productId = productId;
 	}
 	
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
 	public String toString() {
-		return "ProductID: " + productId + Message.WEAK_SEP + "VendorID: " + vendorId;
+		return "ProductID: " + productId + Message.WEAK_SEP + "VendorID: " + vendorId + Message.WEAK_SEP + "Location: " + location;
 	}
 	
 	/**

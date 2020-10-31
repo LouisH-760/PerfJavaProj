@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Main {
 	private static String vendorID = "MyCoolVendor";
 	private static String productID = "MyCoolSensor 2";
+	private static String location = "MyCoolLocation";
 	
 	/**
 	 * Entry point for the JAR, prompts the user wether to start as sensor or station, 
@@ -24,7 +25,7 @@ public class Main {
 			t = new Thread(new StationLogic());
 		} else {
 			System.out.println("Starting as a sensor");
-			t = new Thread(new SensorLogic(vendorID, productID));
+			t = new Thread(new SensorLogic(vendorID, productID, location));
 		}
 		t.start();
 		t.join();

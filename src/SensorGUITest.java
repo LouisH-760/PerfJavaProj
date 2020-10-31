@@ -4,6 +4,11 @@ import java.io.*;
 
 import org.junit.*;
 
+/**
+ * Test class
+ * @author Arno Chaidron
+ *
+ */
 public class SensorGUITest {
     private final InputStream systemIn = System.in;
 
