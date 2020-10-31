@@ -2,6 +2,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+	private static String vendorID = "MyCoolVendor";
+	private static String productID = "MyCoolSensor 2";
+	
 	public static void main(String[] args) throws IOException, InterruptedException{
 		Thread t;
 		Scanner input = new Scanner(System.in);
@@ -10,9 +13,11 @@ public class Main {
 		System.out.print(">");
 		String tmp = input.nextLine();
 		if(tmp.equals("s")) {
+			System.out.println("Starting as a station");
 			t = new Thread(new StationLogic());
 		} else {
-			t = new Thread(new SensorLogic("aa", "bb"));
+			System.out.println("Starting as a sensor");
+			t = new Thread(new SensorLogic(vendorID, productID));
 		}
 		t.start();
 		t.join();
