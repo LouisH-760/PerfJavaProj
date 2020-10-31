@@ -32,8 +32,8 @@ public class StationGUI implements Runnable{
 		System.out.println("3. Min/Max");
 		System.out.println("4. Reset");
 		System.out.println("5. Sensor info");
-		System.out.println("99. Quit");
 		System.out.println("??. Pass");
+		System.out.println("CTRL+C. Quit");
 		System.out.print("int choice >");
 		while (!input.hasNextInt()) 
 			input.next();
@@ -49,8 +49,6 @@ public class StationGUI implements Runnable{
 			return Actions.RESET;
 		case 5:
 			return Actions.INFO;
-		case 99:
-			return Actions.QUIT;
 		default:
 			return Actions.PASS;	
 		}
