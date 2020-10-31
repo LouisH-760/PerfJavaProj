@@ -13,8 +13,9 @@ public class Message {
 	public final static String TYPE_DATA = "DATA";
 	public final static String TYPE_STOP = "STOP";
 	public final static List<String> TYPES = Arrays.asList(new String[]{TYPE_INFO, TYPE_DATA, TYPE_STOP, TYPE_REPL});
-	public final static String SEP = "|";
+	public final static String SEP = "!";
 	public final static String WEAK_SEP = ";";
+	public final static String EMPTY = "NULL";
 	
 	private String id;
 	
@@ -41,7 +42,7 @@ public class Message {
 	 */
 	public Message(String message) {
 		String[] split = message.split(SEP);
-		Helper.check(split.length == 3, "Wrong message format");
+		Helper.check(split.length >= 3, "Wrong message format");
 		
 		// reconstruct the message from the string
 		setType(split[0]);
@@ -54,7 +55,6 @@ public class Message {
 	 * @param type: INFO, ...
 	 */
 	public void setType(String type) {
-		Helper.check(TYPES.contains(type), "Wrong Type");
 		this.type = type;
 	}
 	

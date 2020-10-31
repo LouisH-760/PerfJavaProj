@@ -1,8 +1,7 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * Thread-oriented TCP Server, meant primarily for reception of data
@@ -21,7 +20,7 @@ public class TCPReceiver implements Runnable{
 	private ReceivedMessage tmpMessage;
 	
 	// Thread-safe public variables
-	public volatile List<ReceivedMessage> haystack;
+	public volatile ConcurrentLinkedDeque<ReceivedMessage> haystack;
 	public volatile boolean cont;
 	
 	/**
@@ -34,7 +33,7 @@ public class TCPReceiver implements Runnable{
 		// Start a server socket on the given port
 		servSock = new ServerSocket(port);
 		cont = true;
-		haystack = new ArrayList<ReceivedMessage>();
+		haystack = new ConcurrentLinkedDeque<ReceivedMessage>();
 	}
 	
 	/**
@@ -49,7 +48,6 @@ public class TCPReceiver implements Runnable{
 				// Accept connections on the server
 				sock = servSock.accept();
 				// print a line whenever a connection is received
-				System.out.println("connection from: " + sock.getInetAddress());
 				// Actually receive data
 				// Packet size is a constant in TCPCommon
 				received = TCPCommon.receiveFromSocket(sock);
@@ -58,11 +56,14 @@ public class TCPReceiver implements Runnable{
 					// Get the actual message
 					tmpMessage = new ReceivedMessage(received);
 					// Get the sender's IP to answer (if needed)
-					tmpMessage.setAddress(sock.getInetAddress().toString());
+					// remove the leasing / that java likes to add somehow
+					// otherwise the answer can't be sent, because the IP isn't recognized
+					tmpMessage.setAddress(sock.getInetAddress().toString().substring(1));
 					// Add the message to the haystack
-					haystack.add(tmpMessage);
+					haystack.push(tmpMessage);
 				} catch (Exception e) {
 					System.err.println("Invalid Message Received");
+					e.printStackTrace();
 				}
 				// Close the connection
 				sock.close();
