@@ -5,6 +5,13 @@ public class Main {
 	private static String vendorID = "MyCoolVendor";
 	private static String productID = "MyCoolSensor 2";
 	
+	/**
+	 * Entry point for the JAR, prompts the user wether to start as sensor or station, 
+	 * then start and join the corresponding thread
+	 * @param args
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	public static void main(String[] args) throws IOException, InterruptedException{
 		Thread t;
 		Scanner input = new Scanner(System.in);
