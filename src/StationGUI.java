@@ -6,7 +6,6 @@ import java.util.Scanner;
  *
  */
 public class StationGUI implements Runnable{
-	private final String TEMP_FORMAT = "Last temperature packet value: %.02d°C (Measured at %s)";
 	
 	private Scanner input;
 	private StationLogic parent;
