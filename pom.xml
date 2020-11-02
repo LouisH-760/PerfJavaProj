@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cc1</groupId>
   <artifactId>cc1</artifactId>
-  <version>1.0.0-RELEASE</version>
+  <version>1.1.0-RELEASE</version>
   <name>Controle Continu 1</name>
   <dependencies>
     <dependency>
