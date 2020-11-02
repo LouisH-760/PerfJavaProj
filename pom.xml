@@ -6,8 +6,8 @@
   <name>Controle Continu 1</name>
   <dependencies>
     <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
+        <groupId>org.junit</groupId>
+        <artifactId>junit</artifactId>
         <version>5.4.0</version>
     </dependency>
   </dependencies>
