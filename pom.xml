@@ -6,8 +6,8 @@
   <name>Controle Continu 1</name>
   <dependencies>
     <dependency>
-        <groupId>org.junit.jupyter</groupId>
-        <artifactId>junit.jupyter</artifactId>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit.jupiter</artifactId>
         <version>5.7.0</version>
     </dependency>
   </dependencies>
