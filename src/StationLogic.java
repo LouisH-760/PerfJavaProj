@@ -5,7 +5,6 @@ import java.util.HashSet;
 public class StationLogic implements Runnable{
 	private final String POLLING_INTERVAL = "2000";
 	
-	
 	private String sensorIp;
 	public String stationName;
 	
@@ -26,6 +25,7 @@ public class StationLogic implements Runnable{
 	
 	public volatile boolean cont;
 	public volatile Actions action;
+	public volatile String delay;
 	
 	private HashSet<Double> temps;
 	
@@ -41,6 +41,8 @@ public class StationLogic implements Runnable{
 		sGui = new StationSetupGUI();
 		
 		temps = new HashSet<Double>();
+		
+		delay = POLLING_INTERVAL;
 	}
 	
 	@Override
@@ -98,7 +100,7 @@ public class StationLogic implements Runnable{
 	}
 	
 	private void init() {
-		draft = buildMessage(Message.TYPE_DATA, POLLING_INTERVAL);
+		draft = buildMessage(Message.TYPE_DATA, delay);
 		t_sender = new Thread(new TCPThrowawaySender(sensorIp, TCPCommon.SENSOR_PORT, draft));
 		t_sender.start();
 		done();
