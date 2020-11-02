@@ -2,6 +2,11 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 
+/**
+ * Logic of the Station
+ * @author Louis Hermier, Arno CHaidron
+ *
+ */
 public class StationLogic implements Runnable{
 	private final String POLLING_INTERVAL = "2000";
 	

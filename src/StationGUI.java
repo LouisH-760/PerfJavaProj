@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 /**
  * User interface for the station.
- * @author Louis Hermier
+ * @author Louis Hermier, Arno Chaidron
  *
  */
 public class StationGUI implements Runnable{
