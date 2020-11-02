@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 /**
  * User interface for the station.
- * @author Louis Hermier
+ * @author Louis Hermier, Arno Chaidron
  *
  */
 public class StationGUI implements Runnable{
@@ -40,6 +40,12 @@ public class StationGUI implements Runnable{
 		int choice = input.nextInt();
 		switch (choice) {
 		case 1:
+			int delay;
+			System.out.println("Delay? ");
+			while (!input.hasNextInt()) 
+				input.next();
+			delay = input.nextInt();
+			parent.delay = Integer.toString(delay);
 			return Actions.INIT;
 		case 2: 
 			return Actions.STOP;

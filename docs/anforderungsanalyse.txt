@@ -1,0 +1,33 @@
+Funktionale Anforderungen (FR):
+
+* Sensor:
+FR1 - Der Sensor bietet einen Info-Dienst, der das Senden von ProductId, VendorId und Standort beinhaltet, an
+FR2 - Der Sensor bietet einen Data-Dienst, der periodisch Zeit und aktuelle Teperatur (Temperatur und Zeitpunkt) liefert, an
+FR3 - Der Sensor bietet einen Stop-Dienst an
+FR4 - Der Admin muss den Sensor über die Konsole starten
+
+* Wetterstation:
+FR5 - Wetterstation und Sensor können miteinander kommunizieren (Datenaustausch)
+FR6 - Der Benutzer kann das periodische Senden von Temperaturdaten anfordern und dabei die Messfrequenz angeben
+FR7 - Der Benutzer kann das periodische Senden von Temperaturdaten stoppen
+FR8 - Der Admin kann die Wetterstation über die Konsole starten
+FR9 - Der Benutzer kann die MinMax-Funktion der Wetterstation benutzen
+FR10 - Der Benutzer kann Minimum und Maximum zurücksetzten
+
+
+Nicht funktionale Anforderungen (NFR):
+
+* Sensor
+NFR1 - Sensoren müssen eine ProductId, eine VendorId und einen Standort haben
+NFR2 - Sensoren können im Bereich -20 bis 50°C  messen
+NFR3 - Sensor getestet durch Unit-Tests
+
+* Wetterstation:
+NFR4 - Wetterstation und Sensor kommunizieren über TCP
+NFR5 - 1 Wetterstation kann sich mit genau 1 Sensor verbinden
+
+* Sonstiges:
+NFR6 - UL-Klassendiagramm erstellen 
+NFR7 - Projektbeschreibung verfassen
+NFR8 - Deadline des Projekts am 2.11. (verlängert am 3.11.)
+NFR9 - Die Programmiersprache ist Java
